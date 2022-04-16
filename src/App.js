@@ -3,15 +3,44 @@ import Homepage from './pages/homepage/hompeage.component';
 import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import ShopPage from './pages/shop/shop.component';
-function App() {
-  return (
-    <div>
-      <Switch>
-        <Route exact path={'/'} component={Homepage} />
-        <Route exact path={'/shop'} component={ShopPage} />
-      </Switch>
-    </div>
-  );
+import Header from './components/header/header.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import { auth } from './firebase/firebase.utils';
+import { render } from '@testing-library/react';
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      currentUser: null,
+    };
+  }
+
+  unsubscribeFromAuth = null;
+
+  componentDitMount() {
+    //onAuthStateChanged returns "close communication with firebase function"
+    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
+      this.setState({ currentUser: user });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromAuth(); //closing communication with firebase
+  }
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUser} />
+        <Switch>
+          <Route exact path={'/'} component={Homepage} />
+          <Route path={'/shop'} component={ShopPage} />
+          <Route path={'/signin'} component={SignInAndSignUpPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
