@@ -1,6 +1,6 @@
 import React from 'react';
 import Homepage from './pages/homepage/hompeage.component';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
@@ -45,12 +45,23 @@ class App extends React.Component {
         <Switch>
           <Route exact path={'/'} component={Homepage} />
           <Route path={'/shop'} component={ShopPage} />
-          <Route path={'/signin'} component={SignInAndSignUpPage} />
+          <Route
+            exact
+            path={'/signin'}
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <SignInAndSignUpPage />
+              )
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
+//use anywhere where you need proprties from the reducers
 const mapStateToProps = ({ user }) => ({
   currentUser: user.currentUser,
 });
