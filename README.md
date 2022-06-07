@@ -1,6 +1,8 @@
 # E-Commerece-Website
 This project is in development and part of the [Zero to mastry ](https://www.udemy.com/course/complete-react-developer-zero-to-mastery/) course.
 
+[Check it out here!](https://e-commerce-live-crwn-live.herokuapp.com/)
+
 The topics covered in the course:
 - React Basics
 - React Router
